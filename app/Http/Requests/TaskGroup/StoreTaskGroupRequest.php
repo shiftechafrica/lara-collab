@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\TaskGroup;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,7 +19,7 @@ class StoreTaskGroupRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -27,7 +28,13 @@ class StoreTaskGroupRequest extends FormRequest
                 'required',
                 'string',
                 Rule::unique('task_groups', 'name')
-                    ->where('project_id', $this->route('project')->id),
+                    ->where('project_id', $this->route('project')->id)
+                    ->ignore($this->route('taskGroup')->id),
+            ],
+            'color' => [
+                'nullable',
+                'string',
+                'max:16',
             ],
         ];
     }

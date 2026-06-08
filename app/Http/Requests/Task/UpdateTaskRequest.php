@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Task;
 
 use App\Enums\PricingType;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -19,7 +20,7 @@ class UpdateTaskRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -29,6 +30,7 @@ class UpdateTaskRequest extends FormRequest
             'assigned_to_user_id' => ['nullable', 'exists:users,id'],
             'description' => ['nullable'],
             'estimation' => ['nullable'],
+            'priority_id' => ['nullable', 'exists:task_priorities,id'],
             'pricing_type' => ['string', Rule::enum(PricingType::class)],
             'fixed_price' => ['nullable', 'numeric', 'min:0'],
             'due_on' => ['nullable'],
